@@ -35,11 +35,11 @@ const getProducts = asyncHandler(async (req, res) => {
       let searchQueryCondition = {};
       if (search) {
          queryCondition = true;
-         searchQueryCondition = {
-            title: {
-               $regex: '.*' + search + '.*',
-               $options: 'i'
-            }
+         let a = search.split(",").map(item => {
+            if (item) return new RegExp("^" + item)
+         })
+         let searchQueryCondition = {
+            search: { $in: a }
          }
       }
 

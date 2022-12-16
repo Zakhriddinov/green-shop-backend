@@ -6,7 +6,6 @@ const upload = require("../utils/multer");
 const router = Router();
 
 // public routes:
-router.get("/search/:searchQuery", getProducts);
 router.get("/", getProducts);
 router.get("/bestsellers", getBestSellers);
 router.get("/get-one/:id", getProductById);

@@ -20,11 +20,12 @@ const register = asyncHandler(async (req, res) => {
          const user = await User.create({
             firstName, email, password: hashedPassword
          })
-         res.header("x-auth-token", generateAuthToken(user._id, user.firstName, user.email, user.isAdmin)).status(201).json({
+         res.status(201).json({
             _id: user._id,
             firstName: user.firstName,
             email: user.email,
-            isAdmin: user.isAdmin
+            isAdmin: user.isAdmin,
+            token: generateAuthToken(user._id, user.firstName, user.email, user.isAdmin)
          })
       }
    } catch (error) {
@@ -47,7 +48,8 @@ const login = asyncHandler(async (req, res) => {
             _id: user._id,
             firstName: user.firstName,
             email: user.email,
-            isAdmin: user.isAdmin
+            isAdmin: user.isAdmin,
+            token: generateAuthToken(user._id, user.firstName, user.email, user.isAdmin)
          })
       }
    } catch (error) {

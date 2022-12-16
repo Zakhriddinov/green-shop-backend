@@ -37,7 +37,7 @@ const getProducts = asyncHandler(async (req, res) => {
          queryCondition = true;
          searchQueryCondition = {
             title: {
-               $regex: search,
+               $regex: '.*' + search + '.*',
                $options: 'i'
             }
          }

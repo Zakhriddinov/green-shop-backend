@@ -8,7 +8,7 @@ const getProducts = asyncHandler(async (req, res) => {
    try {
       let query = {};
       let queryCondition = false;
-      const { category, priceFrom, priceTo, size } = req.query;
+      const { category, priceFrom, priceTo, search } = req.query;
 
       let priceQueryCondition = {};
       if (priceFrom || priceTo) {
@@ -32,13 +32,12 @@ const getProducts = asyncHandler(async (req, res) => {
             category: { $in: a }
          }
       }
-      let searchQuery = req.query.search || ""
       let searchQueryCondition = {};
-      if (searchQuery) {
+      if (search) {
          queryCondition = true;
          searchQueryCondition = {
             title: {
-               $regex: searchQuery,
+               $regex: search,
                $options: 'i'
             }
          }

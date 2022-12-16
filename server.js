@@ -12,12 +12,5 @@ connectDB();
 require("./startup/logging")();
 require("./startup/routes")(app);
 
-const path = require("path");
-if (process.env.NODE_ENV === "production") {
-   app.get("/", (req, res) => {
-      res.json({ message: "API running..." });
-   })
-}
-
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, winston.info(`Server started on port ${PORT}`));

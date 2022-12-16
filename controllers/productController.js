@@ -32,7 +32,7 @@ const getProducts = asyncHandler(async (req, res) => {
             category: { $in: a }
          }
       }
-      let searchQuery = req.params.search || ""
+      let searchQuery = req.query.search || ""
       let searchQueryCondition = {};
       if (searchQuery) {
          queryCondition = true;

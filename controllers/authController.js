@@ -20,14 +20,21 @@ const register = asyncHandler(async (req, res) => {
          const user = await User.create({
             firstName, email, password: hashedPassword
          })
-         res.cookie(
-            "access_token",
-            generateAuthToken(user._id, user.firstName, user.email, user.isAdmin),
-            {
-               httpOnly: true,
-               secure: process.env.NODE_ENV === "production",
-               sameSite: "strict"
-            })
+         res
+            .cookie(
+               "access_token",
+               generateAuthToken(
+                  user._id,
+                  user.firstName,
+                  user.email,
+                  user.isAdmin
+               ),
+               {
+                  httpOnly: true,
+                  secure: process.env.NODE_ENV === "production",
+                  sameSite: "strict",
+               }
+            )
             .status(201).json({
                _id: user._id,
                firstName: user.firstName,
@@ -51,15 +58,20 @@ const login = asyncHandler(async (req, res) => {
          return res.status(404).send("Bunday foydalanuvchi mavjud emas!")
       }
       if (user && comparePasswords(password, user.password)) {
-         return res.cookie(
-            "access_token",
-            generateAuthToken(user._id, user.firstName, user.email, user.isAdmin
-            ),
-            {
-               httpOnly: true,
-               secure: process.env.NODE_ENV === "production",
-               sameSite: "strict"
-            }).json({
+         let cookieParams = {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+         };
+         return res
+            .cookie(
+               "access_token",
+               generateAuthToken(
+                  user._id, user.firstName, user.email, user.isAdmin
+               ),
+               cookieParams
+            )
+            .json({
                _id: user._id,
                firstName: user.firstName,
                email: user.email,

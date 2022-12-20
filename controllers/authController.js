@@ -20,12 +20,20 @@ const register = asyncHandler(async (req, res) => {
          const user = await User.create({
             firstName, email, password: hashedPassword
          })
-         res.header("x-auth-token", generateAuthToken(user._id, user.firstName, user.email, user.isAdmin)).status(201).json({
-            _id: user._id,
-            firstName: user.firstName,
-            email: user.email,
-            isAdmin: user.isAdmin
-         })
+         res.cookie(
+            "access_token",
+            generateAuthToken(user._id, user.firstName, user.email, user.isAdmin),
+            {
+               httpOnly: true,
+               secure: process.env.NODE_ENV === "production",
+               sameSite: "strict"
+            })
+            .status(201).json({
+               _id: user._id,
+               firstName: user.firstName,
+               email: user.email,
+               isAdmin: user.isAdmin
+            })
       }
    } catch (error) {
       console.log(error);
@@ -43,12 +51,20 @@ const login = asyncHandler(async (req, res) => {
          return res.status(404).send("Bunday foydalanuvchi mavjud emas!")
       }
       if (user && comparePasswords(password, user.password)) {
-         return res.header('x-auth-token', generateAuthToken(user._id, user.firstName, user.email, user.isAdmin)).json({
-            _id: user._id,
-            firstName: user.firstName,
-            email: user.email,
-            isAdmin: user.isAdmin
-         })
+         return res.cookie(
+            "access_token",
+            generateAuthToken(user._id, user.firstName, user.email, user.isAdmin
+            ),
+            {
+               httpOnly: true,
+               secure: process.env.NODE_ENV === "production",
+               sameSite: "strict"
+            }).json({
+               _id: user._id,
+               firstName: user.firstName,
+               email: user.email,
+               isAdmin: user.isAdmin
+            })
       }
    } catch (error) {
       console.log(error);

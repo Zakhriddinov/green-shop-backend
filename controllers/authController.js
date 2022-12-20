@@ -24,7 +24,8 @@ const register = asyncHandler(async (req, res) => {
             _id: user._id,
             firstName: user.firstName,
             email: user.email,
-            isAdmin: user.isAdmin
+            isAdmin: user.isAdmin,
+            token: generateAuthToken(user._id, user.firstName, user.email, user.isAdmin)
          })
       }
    } catch (error) {
@@ -47,7 +48,8 @@ const login = asyncHandler(async (req, res) => {
             _id: user._id,
             firstName: user.firstName,
             email: user.email,
-            isAdmin: user.isAdmin
+            isAdmin: user.isAdmin,
+            token: generateAuthToken(user._id, user.firstName, user.email, user.isAdmin)
          })
       }
    } catch (error) {

@@ -20,12 +20,11 @@ const register = asyncHandler(async (req, res) => {
          const user = await User.create({
             firstName, email, password: hashedPassword
          })
-         res.status(201).json({
+         res.header("x-auth-token", generateAuthToken(user._id, user.firstName, user.email, user.isAdmin)).status(201).json({
             _id: user._id,
             firstName: user.firstName,
             email: user.email,
-            isAdmin: user.isAdmin,
-            token: generateAuthToken(user._id, user.firstName, user.email, user.isAdmin)
+            isAdmin: user.isAdmin
          })
       }
    } catch (error) {
@@ -44,12 +43,11 @@ const login = asyncHandler(async (req, res) => {
          return res.status(404).send("Bunday foydalanuvchi mavjud emas!")
       }
       if (user && comparePasswords(password, user.password)) {
-         return res.json({
+         return res.header('x-auth-token', generateAuthToken(user._id, user.firstName, user.email, user.isAdmin)).json({
             _id: user._id,
             firstName: user.firstName,
             email: user.email,
-            isAdmin: user.isAdmin,
-            token: generateAuthToken(user._id, user.firstName, user.email, user.isAdmin)
+            isAdmin: user.isAdmin
          })
       }
    } catch (error) {

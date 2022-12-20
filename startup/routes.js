@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const { errorHandler } = require("../middleware/errorMiddleware");
+const jwt = require("jsonwebtoken");
 
 module.exports = function (app) {
    app.use(bodyParser.json());

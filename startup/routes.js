@@ -20,7 +20,7 @@ module.exports = function (app) {
       try {
          const accessToken = req.headers.authorization.split(' ')[1]
          const decoted = jwt.verify(accessToken, process.env.JWT_SECRET_KEY)
-         return res.json({ token: decoted.firstName, isAdmin: decoted.isAdmin })
+         return res.json({ token: decoted.email, isAdmin: decoted.isAdmin })
       } catch (error) {
          return res.status(401).send("Unauthorized. Invalid Token");
       }

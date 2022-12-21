@@ -12,7 +12,7 @@ const protect = asyncHandler(async (req, res, next) => {
          }
          try {
             const decoted = jwt.verify(token, process.env.JWT_SECRET_KEY)
-            req.user = await User.findById(decoted._id).select("-password")
+            req.user = decoted
             next()
          } catch (error) {
             return res.status(401).send("Unauthorized. Invalid Token")

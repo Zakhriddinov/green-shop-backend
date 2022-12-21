@@ -5,9 +5,12 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const { errorHandler } = require("../middleware/errorMiddleware");
 const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
+
 module.exports = function (app) {
    app.use(bodyParser.json());
    app.use(bodyParser.urlencoded({ extended: false }))
+   app.use(cookieParser());
    app.use(cors());
    app.use(helmet({
       contentSecurityPolicy: false,
@@ -18,10 +21,10 @@ module.exports = function (app) {
    // routes:
    app.get('/api/v1/get-token', (req, res) => {
       try {
-         const accessToken = req.headers.authorization.split(' ')[1]
-         const decoted = jwt.verify(accessToken, process.env.JWT_SECRET_KEY)
-         return res.json({ token: decoted.firstName, isAdmin: decoted.isAdmin })
-      } catch (error) {
+         const accessToken = req.cookies["access_token"];
+         const decoded = jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
+         return res.json({ token: decoded.firstName, isAdmin: decoded.isAdmin });
+      } catch (err) {
          return res.status(401).send("Unauthorized. Invalid Token");
       }
    });

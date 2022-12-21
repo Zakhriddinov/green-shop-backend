@@ -43,6 +43,9 @@ const login = asyncHandler(async (req, res) => {
       if (!user) {
          return res.status(404).send("Bunday foydalanuvchi mavjud emas!")
       }
+      if (!comparePasswords(password, user.password)) {
+         return res.status(404).send("Password xato")
+      }
       if (user && comparePasswords(password, user.password)) {
          return res.header('x-auth-token', generateAuthToken(user._id, user.firstName, user.email, user.isAdmin)).json({
             _id: user._id,

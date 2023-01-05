@@ -72,7 +72,7 @@ const getProducts = asyncHandler(async (req, res) => {
          products,
          pageNum,
          paginationLinksNumber: Math.ceil(totalProducts / recordsPerPage),
-         data: products.length * Math.ceil(totalProducts / recordsPerPage)
+         dataLength: totalProducts
       })
    } catch (error) {
       console.log(error);
